@@ -1,0 +1,639 @@
+openapi: 3.0.0
+x-stoplight:
+  id: vugn3vj2lqz9p
+info:
+  title: Order
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/orders/{orderId}':
+    parameters:
+      - schema:
+          format: uuid
+          type: string
+        name: orderId
+        in: path
+        required: true
+    get:
+      summary: GetOrderById
+      responses:
+        '200':
+          $ref: '#/components/responses/OrderResponse'
+      operationId: get-order-orderId
+      x-stoplight:
+        id: nuiyjpe5v48s3
+      tags:
+        - Order
+    patch:
+      summary: UpdateOrder
+      operationId: patch-orders-orderId
+      responses:
+        '200':
+          description: OK
+      x-stoplight:
+        id: hvv72pl89ia6f
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrderRequest'
+      tags:
+        - Order
+    delete:
+      summary: DeleteOrder
+      operationId: delete-orders-orderId
+      responses:
+        '200':
+          description: OK
+      x-stoplight:
+        id: fd521dg02kd9q
+      tags:
+        - Order
+  /orders:
+    get:
+      summary: GetOrderByCriteria
+      responses:
+        '200':
+          $ref: '#/components/responses/OrderPageResponse'
+      operationId: get-orders
+      x-stoplight:
+        id: azoau3gd7y7t5
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: paid
+        - schema:
+            type: string
+          in: query
+          name: status
+      description: ''
+      tags:
+        - Order
+    parameters: []
+    post:
+      summary: CreateOrder
+      operationId: post-orders
+      responses:
+        '200':
+          description: OK
+      x-stoplight:
+        id: vgnzrmpox1ckm
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderRequest'
+      tags:
+        - Order
+components:
+  schemas:
+    Money:
+      title: Money
+      x-stoplight:
+        id: sg5qoxcsrt8rn
+      type: object
+      properties:
+        currency:
+          type: string
+          x-stoplight:
+            id: ly4dqrae7ysci
+        amount:
+          type: number
+          x-stoplight:
+            id: 6y0sa4vzlhwnv
+    Address:
+      title: Address
+      x-stoplight:
+        id: 2143fqk3glx8e
+      type: object
+      properties:
+        country:
+          type: string
+          x-stoplight:
+            id: epphsbhdmjijt
+        city:
+          type: string
+          x-stoplight:
+            id: w0v251fqhjv64
+        address_line:
+          type: string
+          x-stoplight:
+            id: pxu84jor2pmd3
+    User:
+      title: User
+      x-stoplight:
+        id: 7fhjdrshtcx5a
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: mqjvuud7gfpvd
+        name:
+          type: string
+          x-stoplight:
+            id: fcxhw5981ptr1
+        age:
+          type: integer
+          x-stoplight:
+            id: m0qb2y22gvbq8
+        sex:
+          x-stoplight:
+            id: hj8qrqrilikjx
+          enum:
+            - Male
+            - Female
+        address:
+          $ref: '#/components/schemas/Address'
+    Product:
+      title: Product
+      x-stoplight:
+        id: bjltnr21sk2gk
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: 9ah7avywes6iw
+        name:
+          type: string
+          x-stoplight:
+            id: xigpgbgh8qnfy
+        price:
+          $ref: '#/components/schemas/Money'
+        address:
+          x-stoplight:
+            id: paycke11d8gdl
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+    Item:
+      title: Item
+      x-stoplight:
+        id: zmbcwfn6c55pb
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: ph3xpw22ty9jy
+        product:
+          $ref: '#/components/schemas/Product'
+        total_price:
+          $ref: '#/components/schemas/Money'
+        coupons:
+          type: array
+          x-stoplight:
+            id: coxtxdhjbcgzk
+          items:
+            x-stoplight:
+              id: 5722k0adsf67v
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: wzolxbjwp94gb
+              amount:
+                $ref: '#/components/schemas/Money'
+        seller:
+          type: object
+          x-stoplight:
+            id: 7agsnk65i1c99
+          properties:
+            id:
+              type: string
+              x-stoplight:
+                id: 4h4zzyl7j8sa2
+            name:
+              type: string
+              x-stoplight:
+                id: aqy38w0gw6doc
+    Order:
+      title: Order
+      x-stoplight:
+        id: 214rcuojw5dk7
+      type: object
+      x-examples:
+        Example 1:
+          id: string
+          buyer:
+            id: string
+            name: string
+            age: 0
+            sex: Male
+            address:
+              country: string
+              city: string
+              address_line: string
+          items:
+            - id: string
+              product:
+                id: string
+                name: string
+                price:
+                  currency: string
+                  amount: 0
+                address:
+                  - country: string
+                    city: string
+                    address_line: string
+              total_price:
+                currency: string
+                amount: 0
+              coupons:
+                - id: string
+                  amount:
+                    currency: string
+                    amount: 0
+              seller:
+                id: string
+                name: string
+          total_price:
+            currency: string
+            amount: 0
+          paid: true
+          payment_info:
+            time: string
+            amount:
+              currency: string
+              amount: 0
+          status: PAID
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: 0v5z00kuov723
+        buyer:
+          $ref: '#/components/schemas/User'
+        items:
+          x-stoplight:
+            id: hu3y0q37c797h
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        total_price:
+          $ref: '#/components/schemas/Money'
+        paid:
+          type: boolean
+          x-stoplight:
+            id: x6n8agwdeuwxe
+        payment_info:
+          type: object
+          x-stoplight:
+            id: 9klqzxuvrlmfu
+          properties:
+            time:
+              type: string
+              x-stoplight:
+                id: 6mg1ou68nhcbq
+            amount:
+              $ref: '#/components/schemas/Money'
+        status:
+          x-stoplight:
+            id: ylwprkvnhff5d
+          enum:
+            - PAID
+            - UNPAID
+    Link:
+      title: Link
+      x-stoplight:
+        id: zj4d5iba7f03v
+      type: object
+      properties:
+        href:
+          type: string
+          x-stoplight:
+            id: wa8wy2dbfkzfz
+        rel:
+          type: string
+          x-stoplight:
+            id: 82pjdd1jm8pak
+  responses:
+    OrderResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Order'
+    OrderPageResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total_items:
+                type: integer
+                x-stoplight:
+                  id: 9mph7204xd9uf
+              total_pages:
+                type: integer
+                x-stoplight:
+                  id: yx05ehf9sibrq
+              data:
+                $ref: '#/components/schemas/Order'
+              links:
+                type: array
+                x-stoplight:
+                  id: b1kc979digari
+                items:
+                  $ref: '#/components/schemas/Link'
+  requestBodies:
+    CreateOrderRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                buyer:
+                  id: string
+                  name: string
+                  age: 0
+                  sex: Male
+                  address:
+                    country: string
+                    city: string
+                    address_line: string
+                items:
+                  - id: string
+                    product:
+                      id: string
+                      name: string
+                      price:
+                        currency: string
+                        amount: 0
+                      address:
+                        - country: string
+                          city: string
+                          address_line: string
+                    total_price:
+                      currency: string
+                      amount: 0
+                    coupons:
+                      - id: string
+                        amount:
+                          currency: string
+                          amount: 0
+                    seller:
+                      id: string
+                      name: string
+                total_price:
+                  currency: string
+                  amount: 0
+                paid: true
+                payment_info:
+                  time: string
+                  amount:
+                    currency: string
+                    amount: 0
+                status: PAID
+            properties:
+              buyer:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  age:
+                    type: integer
+                  sex:
+                    type: string
+                  address:
+                    type: object
+                    properties:
+                      country:
+                        type: string
+                      city:
+                        type: string
+                      address_line:
+                        type: string
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    product:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        price:
+                          type: object
+                          properties:
+                            currency:
+                              type: string
+                            amount:
+                              type: integer
+                        address:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              country:
+                                type: string
+                              city:
+                                type: string
+                              address_line:
+                                type: string
+                    total_price:
+                      type: object
+                      properties:
+                        currency:
+                          type: string
+                        amount:
+                          type: integer
+                    coupons:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          amount:
+                            type: object
+                            properties:
+                              currency:
+                                type: string
+                              amount:
+                                type: integer
+                    seller:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+              total_price:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                  amount:
+                    type: integer
+              paid:
+                type: boolean
+              payment_info:
+                type: object
+                properties:
+                  time:
+                    type: string
+                  amount:
+                    $ref: '#/components/schemas/Money'
+              status:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+    UpdateOrderRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                buyer:
+                  id: string
+                  name: string
+                  age: 0
+                  sex: Male
+                  address:
+                    country: string
+                    city: string
+                    address_line: string
+                items:
+                  - id: string
+                    product:
+                      id: string
+                      name: string
+                      price:
+                        currency: string
+                        amount: 0
+                      address:
+                        - country: string
+                          city: string
+                          address_line: string
+                    total_price:
+                      currency: string
+                      amount: 0
+                    coupons:
+                      - id: string
+                        amount:
+                          currency: string
+                          amount: 0
+                    seller:
+                      id: string
+                      name: string
+                total_price:
+                  currency: string
+                  amount: 0
+                paid: true
+                payment_info:
+                  time: string
+                  amount:
+                    currency: string
+                    amount: 0
+                status: PAID
+            properties:
+              buyer:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  age:
+                    type: integer
+                  sex:
+                    type: string
+                  address:
+                    type: object
+                    properties:
+                      country:
+                        type: string
+                      city:
+                        type: string
+                      address_line:
+                        type: string
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    product:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        price:
+                          type: object
+                          properties:
+                            currency:
+                              type: string
+                            amount:
+                              type: integer
+                        address:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              country:
+                                type: string
+                              city:
+                                type: string
+                              address_line:
+                                type: string
+                    total_price:
+                      type: object
+                      properties:
+                        currency:
+                          type: string
+                        amount:
+                          type: integer
+                    coupons:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          amount:
+                            type: object
+                            properties:
+                              currency:
+                                type: string
+                              amount:
+                                type: integer
+                    seller:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+              total_price:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                  amount:
+                    type: integer
+              paid:
+                type: boolean
+              payment_info:
+                type: object
+                properties:
+                  time:
+                    type: string
+                  amount:
+                    $ref: '#/components/schemas/Money'
+              status:
+                type: string
+  parameters: {}
